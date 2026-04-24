@@ -33,34 +33,23 @@ function clear() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 w-full max-w-lg mx-auto">
+  <div class="flex flex-col gap-2 w-full max-w-[280px]">
     <label v-if="label" class="text-sm font-semibold text-gray-600 ml-1">
       {{ label }}
     </label>
 
-    <div class="relative w-full group">
-      <!-- Search icon -->
-      <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-        <Icon name="lucide:search-icon" class="w-5 h-5 text-gray-400 group-focus-within:text-brand-500 transition-colors" />
-      </div>
-
+    <div class="relative w-full md:w-[320px] group">
       <input
         :value="localValue"
         @input="onInput"
         type="text"
-        :placeholder="placeholder || 'Search...'"
-        class="block w-full py-3 pl-12 pr-10 text-sm text-gray-900 border border-gray-200 rounded-2xl bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-400 outline-none transition-all shadow-sm hover:shadow-md focus:shadow-md"
+        :placeholder="placeholder || 'Search Ingredients...'"
+        class="block w-full py-3 pl-6 pr-12 text-sm text-gray-800 placeholder-gray-500 bg-[#E5E7EB] border border-transparent rounded-full focus:ring-2 focus:ring-gray-300 focus:outline-none transition-all shadow-sm"
       />
-
-      <!-- Clear button -->
-      <button
-        v-if="localValue"
-        @click="clear"
-        class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-gray-600 transition-colors"
-        aria-label="Clear search"
-      >
-        <Icon name="lucide:x" class="w-4 h-4" />
-      </button>
+      <!-- Search icon aligned to right -->
+      <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+        <Icon name="lucide:search" class="w-5 h-5 text-gray-600 transition-colors group-focus-within:text-gray-900" />
+      </div>
     </div>
   </div>
 </template>

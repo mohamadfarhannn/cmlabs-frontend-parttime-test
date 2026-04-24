@@ -8,6 +8,8 @@ useHead({
   ],
 })
 
+import { useTransition, TransitionPresets } from '@vueuse/core'
+
 const searchQuery = ref('')
 
 const { types, isLoading, isError, refetch } = useIngredients()
@@ -25,57 +27,101 @@ const filteredTypes = computed(() => {
 const totalCount = computed(() =>
   types.value.reduce((sum, t) => sum + t.count, 0)
 )
+
+// Animated count logic
+const count = ref(0)
+const displayCount = useTransition(count, {
+  duration: 2000,
+  transition: TransitionPresets.easeOutExpo,
+})
+
+watch(totalCount, (newVal) => {
+  count.value = newVal
+}, { immediate: true })
+
+const scrollToContent = () => {
+  const el = document.getElementById('explore')
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
 </script>
 
 <template>
-  <div>
+  <div class="w-full">
     <!-- Hero Section -->
-    <section class="hero-gradient text-white py-16 sm:py-24 px-4 relative overflow-hidden">
-      <!-- Decorative blurred circles -->
-      <div class="absolute top-10 -left-20 w-72 h-72 bg-brand-500/20 rounded-full blur-3xl" />
-      <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-
-      <div class="max-w-6xl mx-auto relative z-10 text-center">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-sm mb-6">
-          <Icon name="lucide:sparkles" class="w-4 h-4 text-brand-400" />
-          <span class="text-gray-200">{{ totalCount }} ingredients available</span>
-        </div>
-
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4">
-          Foodie <span class="text-brand-400">Library</span>
-        </h1>
-        <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto mb-10">
-          Explore ingredient categories, discover meals, and learn recipes from around the world.
-        </p>
-
-        <!-- Search -->
-        <div class="max-w-lg mx-auto">
-          <MoleculesSearchBar
-            v-model="searchQuery"
-            placeholder="Search categories..."
-          />
-        </div>
-      </div>
-    </section>
-
-    <!-- Content -->
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-      <!-- Loading -->
-      <div v-if="isLoading" class="flex justify-center py-20">
-        <AtomsLoadingSpinner size="lg" class="text-brand-500" />
-      </div>
-
-      <!-- Error -->
-      <AtomsErrorState v-else-if="isError" :retry-fn="() => refetch()" />
-
-      <!-- Results -->
-      <template v-else>
-        <AtomsEmptyState
-          v-if="filteredTypes.length === 0"
-          message="No categories match your search."
+    <section class="relative h-[80vh] min-h-screen flex items-center overflow-hidden">
+      <!-- Background Image with Overlay -->
+      <div class="absolute inset-0 z-0">
+        <img 
+          src="/hero.webp" 
+          alt="Healthy food bowl" 
+          class="w-full h-full object-cover"
         />
-        <OrganismTypeCategoryGrid v-else :types="filteredTypes" />
-      </template>
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+      </div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 w-full">
+        <div class="max-w-xl">
+          <h1 class="text-5xl sm:text-7xl font-extrabold text-white leading-[1.1] mb-6">
+            Easy Home<br />Cooking
+          </h1>
+          <p class="text-white/90 text-lg sm:text-xl mb-10 max-w-md">
+            Find various recipes from {{ Math.round(displayCount) }}+ available ingredients
+          </p>
+
+          <button 
+            @click="scrollToContent"
+            class="inline-flex items-center justify-center px-8 py-3.5 bg-[#00AD96] hover:bg-[#009682] text-white font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-[#00AD96]/30 transform hover:-translate-y-1 uppercase tracking-wider text-sm"
+          >
+            Let's find out!
+          </button>
+        </div>
+      </div>
     </section>
+
+    <!-- Content Section Wrapper for Full-Width Background -->
+    <div class="body-gradient w-full overflow-hidden">
+      
+      <!-- Content Container for Max-Width Alignment -->
+      <section class="max-w-6xl mx-auto px-4 sm:px-6 py-10 relative min-h-screen">
+        
+        <!-- Top Right Ornament -->
+        <img src="/asset1.webp" alt="Vegetables ornament" class="absolute top-36 right-0 w-2/3 md:w-1/2 xl:w-auto xl:max-w-2xl pointer-events-none -mr-10 sm:-mr-20 -mt-10 sm:-mt-20 z-0 object-contain drop-shadow-2xl opacity-90" />
+
+        <div class="relative z-10 flex flex-col md:justify-between items-start gap-4 mb-10 mt-10 md:mt-24">
+          <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#111111] leading-[1.1] max-w-lg tracking-tight">
+            Explore {{ Math.round(displayCount) }}+ Ingredients, <br/>Around The World.
+          </h2>
+
+          <div class="w-full md:w-auto mt-4 md:mt-0 relative z-20">
+            <MoleculesSearchBar
+              v-model="searchQuery"
+              placeholder="Search Ingredients..."
+            />
+          </div>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="isLoading" class="flex justify-center py-20 relative z-10">
+          <AtomsLoadingSpinner size="lg" class="text-brand-500" />
+        </div>
+
+        <!-- Error -->
+        <AtomsErrorState v-else-if="isError" :retry-fn="() => refetch()" class="relative z-10" />
+
+        <!-- Results -->
+        <template v-else>
+          <AtomsEmptyState
+            v-if="filteredTypes.length === 0"
+            message="No categories match your search."
+            class="relative z-10"
+          />
+          <div class="relative z-10">
+            <OrganismTypeCategoryGrid :types="filteredTypes" />
+          </div>
+        </template>
+      </section>
+    </div>
   </div>
 </template>
