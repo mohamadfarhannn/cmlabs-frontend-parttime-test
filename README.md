@@ -1,75 +1,117 @@
-# Nuxt Minimal Starter
+# CMLabs Frontend Part-Time Test
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+> A recipe exploration app built with **Nuxt 4**, **Vue 3**, **TypeScript**, and **TailwindCSS** — powered by [TheMealDB API](https://www.themealdb.com/).
 
-## Setup
+## 🚀 Live Demo
 
-Make sure to install dependencies:
+<!-- Uncomment and add URL when deployed -->
+<!-- [View Live Demo](https://your-deploy-url.vercel.app) -->
+
+## ✨ Features
+
+- **Browse by Category** — Ingredients are grouped by type (Dressing, Seasoning, Vinegar, etc.)
+- **Ingredient Explorer** — View all ingredients within a category with images and descriptions
+- **Meal Discovery** — See meals you can make with a specific ingredient
+- **Meal Detail** — Full recipe with instructions, YouTube tutorial embed, and ingredient list
+- **Search** — Real-time search on every page (categories, ingredients, meals)
+- **Responsive** — Fully responsive across desktop, tablet (iPad), and mobile
+- **Atomic Design** — Component architecture following Atoms → Molecules → Organisms pattern
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| [Nuxt 4](https://nuxt.com/) | Framework (SSR + file-based routing) |
+| [Vue 3](https://vuejs.org/) | UI library (Composition API) |
+| [TypeScript](https://www.typescriptlang.org/) | Type safety |
+| [TailwindCSS](https://tailwindcss.com/) | Utility-first CSS |
+| [TanStack Query](https://tanstack.com/query) | Data fetching & caching |
+| [VueUse](https://vueuse.org/) | Composable utilities |
+| [Nuxt Icon](https://nuxt.com/modules/icon) | Icon system (Lucide) |
+
+## 📁 Project Structure
+
+```
+app/
+├── assets/css/          # Global styles & design system
+├── components/
+│   ├── atoms/           # Base components (Button, Card, Badge, etc.)
+│   ├── molecules/       # Composed components (SearchBar, PageHeader, etc.)
+│   └── organism/        # Complex sections (Navbar, Grids, etc.)
+├── composables/         # Shared state & logic (useIngredients)
+├── layouts/             # App layout (Navbar + Footer)
+├── pages/               # File-based routing
+│   ├── index.vue        # Home — Category listing
+│   ├── type/[type].vue  # Ingredients by category
+│   ├── ingredient/[name].vue  # Meals by ingredient
+│   └── meal/[id].vue    # Meal detail + recipe
+├── plugins/             # Vue Query setup
+├── types/               # TypeScript interfaces
+└── utils/               # API service functions
+```
+
+## 📡 API Endpoints Used
+
+| Endpoint | URL | Usage |
+|---|---|---|
+| List Ingredients | `themealdb.com/api/json/v1/1/list.php?i=list` | Home + Category pages |
+| Filter by Ingredient | `themealdb.com/api/json/v1/1/filter.php?i={name}` | Meals by ingredient |
+| Meal Detail | `themealdb.com/api/json/v1/1/lookup.php?i={id}` | Meal detail page |
+
+## 🏃 Getting Started
+
+### Prerequisites
+
+- **Node.js** >= 18.x
+- **npm** >= 9.x
+
+### Installation
 
 ```bash
-# npm
+# Clone the repository
+git clone https://github.com/your-username/cmlabs-frontend-parttime-test.git
+cd cmlabs-frontend-parttime-test
+
+# Install dependencies
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+### Development
 
 ```bash
-# npm
+# Start the dev server (http://localhost:3000)
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
-
-Build the application for production:
+### Production Build
 
 ```bash
-# npm
+# Build for production
 npm run build
 
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
+# Preview the production build
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## 📄 Pages Overview
+
+### 1. Home — Category Listing (`/`)
+Browse ingredient categories (Dressing, Seasoning, Root Vegetable, etc.) with a hero section and search.
+
+### 2. Ingredients by Type (`/type/{type}`)
+View all ingredients within a selected category. Each ingredient card shows an image and description.
+
+### 3. Meals by Ingredient (`/ingredient/{name}`)
+Discover meals you can make with a selected ingredient. Each meal card shows the meal image.
+
+### 4. Meal Detail (`/meal/{id}`)
+Full recipe page including:
+- Hero meal image
+- Category, area, and tag badges
+- Step-by-step cooking instructions
+- Ingredient & measure list with thumbnails
+- Embedded YouTube tutorial video
+
+---
+
+Made with ❤️ for CMLabs Assessment
