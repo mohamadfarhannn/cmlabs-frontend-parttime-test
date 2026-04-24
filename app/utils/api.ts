@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { Ingredient, MealPreview, MealDetail } from '~/types'
 
 const api = axios.create({
-  baseURL: 'https://www.themealdb.com/api/json/v1/1',
+  baseURL: useRuntimeConfig().public.apiBaseUrl as string,
 })
 
 // Fungsi untuk mengambil semua daftar ingredients

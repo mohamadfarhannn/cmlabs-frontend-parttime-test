@@ -8,6 +8,12 @@ export default defineNuxtConfig({
 
   modules: ['@nuxtjs/tailwindcss', '@vueuse/nuxt', '@nuxt/icon'],
 
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: '',
+    }
+  },
+
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
