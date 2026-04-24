@@ -8,6 +8,38 @@ export default defineNuxtConfig({
 
   modules: ['@nuxtjs/tailwindcss', '@vueuse/nuxt', '@nuxt/icon'],
 
+  app: {
+    head: {
+      htmlAttrs: { lang: 'en' },
+      title: 'Foodie Library — Explore Ingredients & Meals',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        {
+          name: 'description',
+          content: 'Discover ingredients, explore meal recipes, and watch cooking tutorials — powered by TheMealDB API.',
+        },
+      ],
+      link: [
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.googleapis.com',
+        },
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.gstatic.com',
+          crossorigin: '',
+        },
+        {
+          rel: 'icon',
+          type: 'image/webp',
+          href: '/favicon.ico.webp',
+        },
+      ],
+    },
+    pageTransition: { name: 'page', mode: 'out-in' },
+  },
+
   vite: {
     optimizeDeps: {
       include: [
