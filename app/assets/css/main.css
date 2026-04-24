@@ -27,8 +27,11 @@
   }
 
   /* Gradient hero background */
-  .hero-gradient {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #e94560 100%);
+  .body-gradient {
+    /* Soft top-left to bottom-right radial/linear gradient mimicking the light yellow glow */
+    background: radial-gradient(circle at top left, rgba(231, 191, 60, 0.15) 0%, rgba(255, 255, 255, 0) 50%),
+                radial-gradient(circle at bottom right, rgba(231, 191, 60, 0.2) 0%, rgba(255, 255, 255, 0) 60%);
+    background-color: #FAFAFA;
   }
 
   /* Warm accent gradient */
