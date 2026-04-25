@@ -1,15 +1,28 @@
 <script setup lang="ts">
 defineProps<{
-  name: string
+  name?: string
   thumbnail?: string
   description?: string | null
+  loading?: boolean
 }>()
 </script>
 
 <template>
+  <div
+    v-if="loading"
+    class="flex items-center gap-4 p-3 bg-white border border-gray-100 rounded-xl shadow-sm animate-pulse"
+  >
+    <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-gray-200" />
+    <div class="flex-1 min-w-0">
+      <div class="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+      <div class="h-3 bg-gray-100 rounded w-1/2" />
+    </div>
+  </div>
+
   <NuxtLink 
+    v-else-if="name"
     :to="`/ingredient/${encodeURIComponent(name)}`"
-    class="group flex items-center gap-4 p-3 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-lg hover:border-brand-200 transition-all duration-300 hover:-translate-y-0.5"
+    class="group flex items-center gap-4 p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg hover:border-brand-200 transition-all duration-300 hover:-translate-y-0.5"
   >
     <!-- Thumbnail -->
     <div class="flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden bg-brand-50 group-hover:bg-brand-100 transition-colors">

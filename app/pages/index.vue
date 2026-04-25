@@ -44,6 +44,11 @@ const scrollToContent = () => {
   if (el) {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+
+  count.value = 0
+  setTimeout(() => {
+    count.value = totalCount.value
+  }, 100)
 }
 </script>
 
@@ -63,10 +68,10 @@ const scrollToContent = () => {
 
       <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 w-full">
         <div class="max-w-xl">
-          <h1 class="text-5xl sm:text-7xl font-extrabold text-white leading-[1.1] mb-6">
+          <h1 class="text-5xl sm:text-6xl md:text-8xl font-extrabold text-white leading-[1.1] mb-6">
             Easy Home<br />Cooking
           </h1>
-          <p class="text-white/90 text-lg sm:text-xl mb-10 max-w-md">
+          <p class="text-white/90 text-lg sm:text-xl md:text-3xl mb-10 max-w-md">
             Find various recipes from {{ Math.round(displayCount) }}+ available ingredients
           </p>
 
@@ -80,10 +85,10 @@ const scrollToContent = () => {
       </div>
     </section>
 
-    <!-- Content Section Wrapper for Full-Width Background -->
-    <div class="body-gradient w-full overflow-hidden">
+    <!-- Content Section Wrapper  -->
+    <div id="explore" class="body-gradient w-full overflow-hidden">
       
-      <!-- Content Container for Max-Width Alignment -->
+      <!-- Content Container -->
       <section class="max-w-6xl mx-auto px-4 sm:px-6 py-10 relative min-h-screen">
         
         <!-- Top Right Ornament -->
@@ -97,28 +102,25 @@ const scrollToContent = () => {
           <div class="w-full md:w-auto mt-4 md:mt-0 relative z-20">
             <MoleculesSearchBar
               v-model="searchQuery"
-              placeholder="Search Ingredients..."
+              placeholder="Search Ingredients Category..."
+              class="w-full"
+              input-class="bg-white border-gray-200"
             />
           </div>
         </div>
 
-        <!-- Loading -->
-        <div v-if="isLoading" class="flex justify-center py-20 relative z-10">
-          <AtomsLoadingSpinner size="lg" class="text-brand-500" />
-        </div>
-
         <!-- Error -->
-        <AtomsErrorState v-else-if="isError" :retry-fn="() => refetch()" class="relative z-10" />
+        <AtomsErrorState v-if="isError" :retry-fn="() => refetch()" class="relative z-10" />
 
         <!-- Results -->
         <template v-else>
           <AtomsEmptyState
-            v-if="filteredTypes.length === 0"
+            v-if="!isLoading && filteredTypes.length === 0"
             message="No categories match your search."
             class="relative z-10"
           />
           <div class="relative z-10">
-            <OrganismTypeCategoryGrid :types="filteredTypes" />
+            <OrganismTypeCategoryGrid :types="filteredTypes" :loading="isLoading" />
           </div>
         </template>
       </section>
