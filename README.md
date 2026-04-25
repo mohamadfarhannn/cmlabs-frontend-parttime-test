@@ -4,8 +4,7 @@
 
 ## 🚀 Live Demo
 
-<!-- Uncomment and add URL when deployed -->
-<!-- [View Live Demo](https://your-deploy-url.vercel.app) -->
+[View Live Demo](https://cmlabs-parttimetest-farhan.netlify.app/) 
 
 ## ✨ Features
 
