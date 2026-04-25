@@ -10,7 +10,7 @@ useHead({
 
 const searchQuery = ref('')
 
-// Get all ingredients from our shared composable
+// Get all ingredients
 const { ingredients, isLoading, isError, refetch } = useIngredients()
 
 // Filter all ingredients by search query
@@ -64,7 +64,6 @@ const filteredIngredients = computed(() => {
         message="No ingredients match your search."
       />
       
-      <!-- We reuse the exact same Grid component! -->
       <OrganismIngredientGrid 
         :ingredients="filteredIngredients" 
         :loading="isLoading" 
