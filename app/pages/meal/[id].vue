@@ -24,12 +24,23 @@ const tags = computed(() =>
     : []
 )
 
-// Split instructions into paragraphs for better readability
-const instructionParagraphs = computed(() =>
-  meal.value?.strInstructions
-    ? meal.value.strInstructions.split(/\r?\n/).filter((p) => p.trim())
-    : []
-)
+// Split instructions into paragraphs and clean up special characters
+const instructionParagraphs = computed(() => {
+  if (!meal.value?.strInstructions) return []
+
+  const cleanedText = meal.value.strInstructions.replace(/\u25a2/g, '\n')
+  
+  return cleanedText
+    .split(/\r?\n/)
+    .map(p => p.trim())
+    .filter(p => {
+      const isMeaningless = p.length === 0 || /^[\s\u25a2\t\r\n]+$/.test(p) || /^\d+$/.test(p)
+      return !isMeaningless
+    })
+
+    .map(p => p.replace(/^\s*(Step\s+)?(\d+)(\.|\:|\))\s*/i, ''))
+    .filter(p => p.length > 0)
+})
 
 // Dynamic head
 useHead({
@@ -49,20 +60,24 @@ useHead({
   <div>
     <!-- Loading Skeleton -->
     <div v-if="isLoading" class="animate-pulse">
-      <!-- Breadcrumbs Skeleton -->
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-        <div class="h-4 bg-gray-100 rounded w-48" />
-      </div>
-
       <!-- Hero Image Skeleton -->
       <div class="relative h-64 sm:h-80 md:h-[28rem] bg-gray-200">
+        <!-- Top Skeleton Overlay -->
+        <div class="absolute top-0 left-0 right-0 p-6 sm:p-8">
+          <div class="max-w-6xl mx-auto">
+            <div class="h-4 bg-gray-300/50 rounded w-48 mb-6"></div>
+            <div class="h-10 bg-gray-300/50 rounded-xl w-24"></div>
+          </div>
+        </div>
+
+        <!-- Bottom Skeleton Overlay -->
         <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 z-10 w-full">
           <div class="max-w-6xl mx-auto">
             <div class="flex gap-2 mb-3">
-              <div class="h-6 bg-gray-300 rounded-full w-20" />
-              <div class="h-6 bg-gray-300 rounded-full w-24" />
+              <div class="h-6 bg-gray-300 rounded-full w-20"></div>
+              <div class="h-6 bg-gray-300 rounded-full w-24"></div>
             </div>
-            <div class="h-10 bg-gray-300 rounded w-3/4 max-w-lg" />
+            <div class="h-10 bg-gray-300 rounded w-3/4 max-w-lg"></div>
           </div>
         </div>
       </div>
@@ -73,16 +88,16 @@ useHead({
           <!-- Left: Instructions Skeleton -->
           <div class="lg:col-span-2 space-y-8">
             <div class="space-y-4">
-              <div class="h-6 bg-gray-200 rounded w-40 mb-6" />
-              <div v-for="n in 6" :key="n" class="h-4 bg-gray-100 rounded w-full" />
-              <div class="h-4 bg-gray-100 rounded w-4/5" />
+              <div class="h-6 bg-gray-200 rounded w-40 mb-6"></div>
+              <div v-for="n in 6" :key="n" class="h-4 bg-gray-100 rounded w-full"></div>
+              <div class="h-4 bg-gray-100 rounded w-4/5"></div>
             </div>
           </div>
           <!-- Right: Sidebar Skeleton -->
           <aside>
             <div class="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
-              <div class="h-6 bg-gray-200 rounded w-32" />
-              <div v-for="n in 8" :key="n" class="h-4 bg-gray-100 rounded w-full" />
+              <div class="h-6 bg-gray-200 rounded w-32"></div>
+              <div v-for="n in 8" :key="n" class="h-4 bg-gray-100 rounded w-full"></div>
             </div>
           </aside>
         </div>
@@ -101,17 +116,8 @@ useHead({
 
     <!-- Meal Detail -->
     <template v-else>
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-        <AtomsBreadcrumbs
-          :items="[
-            { label: 'Home', to: '/' },
-            { label: meal.strCategory, to: `/type/${encodeURIComponent(meal.strCategory)}` },
-            { label: meal.strMeal }
-          ]"
-        />
-      </div>
       <!-- Hero Image -->
-      <div class="relative h-64 sm:h-80 md:h-[28rem] overflow-hidden">
+      <div class="relative h-80 md:h-[28rem] overflow-hidden">
         <img
           :src="meal.strMealThumb"
           :alt="meal.strMeal"
@@ -119,15 +125,28 @@ useHead({
         />
         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-        <!-- Back button overlay -->
-        <div class="absolute top-4 left-4 sm:top-6 sm:left-6 z-10">
-          <button
-            @click="$router.back()"
-            class="flex items-center gap-2 px-3 py-2 bg-black/40 backdrop-blur-md text-white text-sm rounded-xl hover:bg-black/60 transition-colors"
-          >
-            <Icon name="lucide:arrow-left" class="w-4 h-4" />
-            Back
-          </button>
+        <!-- Top overlay -->
+        <div class="absolute top-0 left-0 right-0 p-6 sm:p-8 z-10">
+          <div class="max-w-6xl mx-auto">
+            <AtomsBreadcrumbs
+              class="text-white mb-0 backdrop-blur-md px-4 py-2 rounded-xl max-w-fit"
+              :items="[
+                { label: 'Home', to: '/' },
+                { label: meal.strCategory, to: `/type/${encodeURIComponent(meal.strCategory)}` },
+                { label: meal.strMeal }
+              ]"
+            />
+            
+            <div class="mt-4 sm:mt-6">
+              <button
+                @click="$router.back()"
+                class="flex items-center gap-2 px-3 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-sm rounded-xl border border-white/20 transition-all duration-300"
+              >
+                <Icon name="lucide:arrow-left" class="w-4 h-4" />
+                Back
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Title overlay -->
@@ -152,19 +171,11 @@ useHead({
           <div class="lg:col-span-2 space-y-8">
             <!-- Instructions -->
             <section>
-              <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <Icon name="lucide:book-open" class="w-5 h-5 text-brand-500" />
-                Instructions
+                Step-by-Step Instructions
               </h2>
-              <div class="prose prose-gray max-w-none space-y-3">
-                <p
-                  v-for="(paragraph, i) in instructionParagraphs"
-                  :key="i"
-                  class="text-gray-600 leading-relaxed text-sm sm:text-base"
-                >
-                  {{ paragraph }}
-                </p>
-              </div>
+              <MoleculesInstructionList :steps="instructionParagraphs" />
             </section>
 
             <!-- YouTube -->

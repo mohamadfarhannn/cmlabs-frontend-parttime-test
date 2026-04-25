@@ -7,7 +7,6 @@ const isMenuOpen = ref(false)
 const navigation = [
   { label: 'Home', to: '/' },
   { label: 'Ingredients', to: '/ingredients' },
-  { label: 'Meals', to: '/meals' },
 ]
 
 watch(() => route.path, () => {
