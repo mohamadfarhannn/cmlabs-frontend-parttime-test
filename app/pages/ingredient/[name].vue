@@ -13,7 +13,16 @@ useHead({
   ],
 })
 
+const { ingredients } = useIngredients()
 const searchQuery = ref('')
+
+const ingredient = computed(() => 
+  ingredients.value?.find(i => i.strIngredient === ingredientName.value)
+)
+
+const ingredientType = computed(() => 
+  ingredient.value?.strType || 'Other'
+)
 
 const { data: meals, isLoading, isError, refetch } = useQuery<MealPreview[]>({
   queryKey: ['meals-by-ingredient', ingredientName],
@@ -35,7 +44,7 @@ const filteredMeals = computed(() => {
     <AtomsBreadcrumbs
       :items="[
         { label: 'Home', to: '/' },
-        { label: 'Ingredients', to: '/' },
+        { label: ingredientType, to: `/type/${encodeURIComponent(ingredientType)}` },
         { label: ingredientName }
       ]"
     />
@@ -45,7 +54,7 @@ const filteredMeals = computed(() => {
       subtitle="Meals you can make with this ingredient"
     >
       <template #back>
-        <AtomsBackButton to="/" label="Back" />
+        <AtomsBackButton :to="`/type/${encodeURIComponent(ingredientType)}`" label="Back" />
       </template>
 
       <template #extra>
@@ -64,22 +73,17 @@ const filteredMeals = computed(() => {
       </template>
     </MoleculesPageHeader>
 
-    <!-- Loading -->
-    <div v-if="isLoading" class="flex justify-center py-20">
-      <AtomsLoadingSpinner size="lg" class="text-brand-500" />
-    </div>
-
     <!-- Error -->
-    <AtomsErrorState v-else-if="isError" :retry-fn="() => refetch()" />
+    <AtomsErrorState v-if="isError" :retry-fn="() => refetch()" />
 
     <!-- Results -->
     <template v-else>
       <AtomsEmptyState
-        v-if="filteredMeals.length === 0"
+        v-if="!isLoading && filteredMeals.length === 0"
         message="No meals found for this ingredient."
         icon="lucide:utensils-crossed"
       />
-      <OrganismMealGrid v-else :meals="filteredMeals" />
+      <OrganismMealGrid :meals="filteredMeals" :loading="isLoading" />
     </template>
   </div>
 </template>

@@ -63,21 +63,16 @@ const filteredIngredients = computed(() => {
       </template>
     </MoleculesPageHeader>
 
-    <!-- Loading -->
-    <div v-if="isLoading" class="flex justify-center py-20">
-      <AtomsLoadingSpinner size="lg" class="text-brand-500" />
-    </div>
-
     <!-- Error -->
-    <AtomsErrorState v-else-if="isError" :retry-fn="() => refetch()" />
+    <AtomsErrorState v-if="isError" :retry-fn="() => refetch()" />
 
     <!-- Results -->
     <template v-else>
       <AtomsEmptyState
-        v-if="filteredIngredients.length === 0"
+        v-if="!isLoading && filteredIngredients.length === 0"
         message="No ingredients match your search in this category."
       />
-      <OrganismIngredientGrid v-else :ingredients="filteredIngredients" />
+      <OrganismIngredientGrid :ingredients="filteredIngredients" :loading="isLoading" />
     </template>
   </div>
 </template>

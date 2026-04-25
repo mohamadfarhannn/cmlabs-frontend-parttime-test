@@ -85,10 +85,10 @@ const scrollToContent = () => {
       </div>
     </section>
 
-    <!-- Content Section Wrapper for Full-Width Background -->
+    <!-- Content Section Wrapper  -->
     <div id="explore" class="body-gradient w-full overflow-hidden">
       
-      <!-- Content Container for Max-Width Alignment -->
+      <!-- Content Container -->
       <section class="max-w-6xl mx-auto px-4 sm:px-6 py-10 relative min-h-screen">
         
         <!-- Top Right Ornament -->
@@ -102,7 +102,9 @@ const scrollToContent = () => {
           <div class="w-full md:w-auto mt-4 md:mt-0 relative z-20">
             <MoleculesSearchBar
               v-model="searchQuery"
-              placeholder="Search Ingredients..."
+              placeholder="Search Ingredients Category..."
+              class="w-full"
+              input-class="bg-white border-gray-200"
             />
           </div>
         </div>

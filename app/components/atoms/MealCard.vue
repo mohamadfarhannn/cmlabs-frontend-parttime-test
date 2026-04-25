@@ -1,15 +1,26 @@
 <script setup lang="ts">
 defineProps<{
-  id: string
-  name: string
-  thumbnail: string
+  id?: string
+  name?: string
+  thumbnail?: string
+  loading?: boolean
 }>()
 </script>
 
 <template>
+  <div
+    v-if="loading"
+    class="h-full flex flex-col rounded-xl bg-white p-3 md:p-4 shadow-sm border border-gray-100 animate-pulse"
+  >
+    <div class="h-6 bg-gray-200 rounded w-3/4 mb-4" />
+    <div class="relative aspect-[5/6] mb-6 bg-gray-200 rounded-xl" />
+    <div class="mt-auto h-10 bg-gray-100 rounded-full" />
+  </div>
+
   <NuxtLink
+    v-else-if="id && name && thumbnail"
     :to="`/meal/${id}`"
-    class="group h-full flex flex-col rounded-xl bg-[#F8F9FA] px-2 py-3 md:p-4 transition-all duration-500 shadow-sm hover:shadow-lg hover:border-brand-200 hover:-translate-y-2 border border-transparent"
+    class="group h-full flex flex-col rounded-xl bg-white px-2 py-3 md:p-4 transition-all duration-500 shadow-sm hover:shadow-lg hover:border-brand-200 hover:-translate-y-2 border border-gray-200"
   >
   
     <!-- Title -->
