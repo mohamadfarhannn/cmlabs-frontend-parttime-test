@@ -47,9 +47,46 @@ useHead({
 
 <template>
   <div>
-    <!-- Loading -->
-    <div v-if="isLoading" class="flex justify-center py-32">
-      <AtomsLoadingSpinner size="lg" class="text-brand-500" />
+    <!-- Loading Skeleton -->
+    <div v-if="isLoading" class="animate-pulse">
+      <!-- Breadcrumbs Skeleton -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+        <div class="h-4 bg-gray-100 rounded w-48" />
+      </div>
+
+      <!-- Hero Image Skeleton -->
+      <div class="relative h-64 sm:h-80 md:h-[28rem] bg-gray-200">
+        <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 z-10 w-full">
+          <div class="max-w-6xl mx-auto">
+            <div class="flex gap-2 mb-3">
+              <div class="h-6 bg-gray-300 rounded-full w-20" />
+              <div class="h-6 bg-gray-300 rounded-full w-24" />
+            </div>
+            <div class="h-10 bg-gray-300 rounded w-3/4 max-w-lg" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Skeleton -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+          <!-- Left: Instructions Skeleton -->
+          <div class="lg:col-span-2 space-y-8">
+            <div class="space-y-4">
+              <div class="h-6 bg-gray-200 rounded w-40 mb-6" />
+              <div v-for="n in 6" :key="n" class="h-4 bg-gray-100 rounded w-full" />
+              <div class="h-4 bg-gray-100 rounded w-4/5" />
+            </div>
+          </div>
+          <!-- Right: Sidebar Skeleton -->
+          <aside>
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
+              <div class="h-6 bg-gray-200 rounded w-32" />
+              <div v-for="n in 8" :key="n" class="h-4 bg-gray-100 rounded w-full" />
+            </div>
+          </aside>
+        </div>
+      </div>
     </div>
 
     <!-- Error -->
