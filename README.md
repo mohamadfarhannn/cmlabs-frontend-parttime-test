@@ -69,11 +69,17 @@ app/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/cmlabs-frontend-parttime-test.git
+git clone https://github.com/mohamadfarhannn/cmlabs-frontend-parttime-test.git
 cd cmlabs-frontend-parttime-test
+
+# Use the correct Node version (if using nvm)
+nvm use
 
 # Install dependencies
 npm install
+
+# Setup environment variables
+cp .env.example .env
 ```
 
 ### Development
