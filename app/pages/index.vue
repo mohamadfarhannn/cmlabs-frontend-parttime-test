@@ -44,6 +44,11 @@ const scrollToContent = () => {
   if (el) {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+
+  count.value = 0
+  setTimeout(() => {
+    count.value = totalCount.value
+  }, 100)
 }
 </script>
 
@@ -63,10 +68,10 @@ const scrollToContent = () => {
 
       <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 w-full">
         <div class="max-w-xl">
-          <h1 class="text-5xl sm:text-7xl font-extrabold text-white leading-[1.1] mb-6">
+          <h1 class="text-5xl sm:text-6xl md:text-8xl font-extrabold text-white leading-[1.1] mb-6">
             Easy Home<br />Cooking
           </h1>
-          <p class="text-white/90 text-lg sm:text-xl mb-10 max-w-md">
+          <p class="text-white/90 text-lg sm:text-xl md:text-3xl mb-10 max-w-md">
             Find various recipes from {{ Math.round(displayCount) }}+ available ingredients
           </p>
 
@@ -81,7 +86,7 @@ const scrollToContent = () => {
     </section>
 
     <!-- Content Section Wrapper for Full-Width Background -->
-    <div class="body-gradient w-full overflow-hidden">
+    <div id="explore" class="body-gradient w-full overflow-hidden">
       
       <!-- Content Container for Max-Width Alignment -->
       <section class="max-w-6xl mx-auto px-4 sm:px-6 py-10 relative min-h-screen">

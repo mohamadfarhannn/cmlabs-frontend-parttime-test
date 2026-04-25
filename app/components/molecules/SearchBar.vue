@@ -44,11 +44,11 @@ function clear() {
         @input="onInput"
         type="text"
         :placeholder="placeholder || 'Search Ingredients...'"
-        class="block w-full py-3 pl-6 pr-12 text-sm text-gray-800 placeholder-gray-500 bg-[#E5E7EB] border border-transparent rounded-full focus:ring-2 focus:ring-gray-300 focus:outline-none transition-all shadow-sm"
+        class="block w-full py-3 pl-6 pr-12 text-sm text-gray-800 placeholder-gray-500 bg-white border border-transparent rounded-full focus:ring-2 focus:ring-brand-500 focus:border-brand-500 focus:outline-none transition-all duration-300 shadow-sm"
       />
-      <!-- Search icon aligned to right -->
+
       <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-        <Icon name="lucide:search" class="w-5 h-5 text-gray-600 transition-colors group-focus-within:text-gray-900" />
+        <Icon name="lucide:search" class="w-5 h-5 text-gray-600 transition-colors group-focus-within:text-brand-500" />
       </div>
     </div>
   </div>
