@@ -37,16 +37,37 @@ const filteredMeals = computed(() => {
     meal.strMeal.toLowerCase().includes(q)
   )
 })
+
+const router = useRouter()
+const comesFromAllIngredients = ref(false)
+
+onMounted(() => {
+  // Check if the user navigated here from the /ingredients page
+  if (import.meta.client) {
+    const back = window.history.state?.back as string | undefined
+    if (back === '/ingredients') {
+      comesFromAllIngredients.value = true
+    }
+  }
+})
+
+const dynamicBreadcrumbs = computed(() => {
+  const middleNode = comesFromAllIngredients.value
+    ? { label: 'Ingredients', to: '/ingredients' }
+    : { label: ingredientType.value, to: `/type/${encodeURIComponent(ingredientType.value)}` }
+
+  return [
+    { label: 'Home', to: '/' },
+    middleNode,
+    { label: ingredientName.value }
+  ]
+})
 </script>
 
 <template>
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
     <AtomsBreadcrumbs
-      :items="[
-        { label: 'Home', to: '/' },
-        { label: ingredientType, to: `/type/${encodeURIComponent(ingredientType)}` },
-        { label: ingredientName }
-      ]"
+      :items="dynamicBreadcrumbs"
     />
 
     <MoleculesPageHeader
@@ -54,7 +75,7 @@ const filteredMeals = computed(() => {
       subtitle="Meals you can make with this ingredient"
     >
       <template #back>
-        <AtomsBackButton :to="`/type/${encodeURIComponent(ingredientType)}`" label="Back" />
+        <AtomsBackButton label="Back" />
       </template>
 
       <template #extra>
