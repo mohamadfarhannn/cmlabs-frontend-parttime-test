@@ -107,23 +107,18 @@ const scrollToContent = () => {
           </div>
         </div>
 
-        <!-- Loading -->
-        <div v-if="isLoading" class="flex justify-center py-20 relative z-10">
-          <AtomsLoadingSpinner size="lg" class="text-brand-500" />
-        </div>
-
         <!-- Error -->
-        <AtomsErrorState v-else-if="isError" :retry-fn="() => refetch()" class="relative z-10" />
+        <AtomsErrorState v-if="isError" :retry-fn="() => refetch()" class="relative z-10" />
 
         <!-- Results -->
         <template v-else>
           <AtomsEmptyState
-            v-if="filteredTypes.length === 0"
+            v-if="!isLoading && filteredTypes.length === 0"
             message="No categories match your search."
             class="relative z-10"
           />
           <div class="relative z-10">
-            <OrganismTypeCategoryGrid :types="filteredTypes" />
+            <OrganismTypeCategoryGrid :types="filteredTypes" :loading="isLoading" />
           </div>
         </template>
       </section>
