@@ -1,11 +1,12 @@
 <script setup lang="ts">
 defineProps<{
   items: { label: string; to?: string }[]
+  class?: string
 }>()
 </script>
 
 <template>
-  <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+  <nav :class="cn('flex items-center gap-2 text-sm text-gray-500 mb-6', $props.class)">
     <template v-for="(item, i) in items" :key="i">
       <Icon
         v-if="i > 0"
@@ -20,7 +21,7 @@ defineProps<{
       >
         {{ item.label }}
       </NuxtLink>
-      <span v-else class="font-medium text-gray-900 truncate">
+      <span v-else class="font-medium truncate text-current">
         {{ item.label }}
       </span>
     </template>
